@@ -1,9 +1,0 @@
-.gallery {
-    list-style: none;
-    padding: 24px 156px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
-  }
