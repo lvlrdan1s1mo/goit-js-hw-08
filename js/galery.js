@@ -64,41 +64,34 @@ const images = [
     },
   ];
     
-const galleryContainer = document.querySelector('.gallery');
+  const gallery = document.querySelector('.gallery');
 
-images.forEach(image => {
-  const galleryItem = document.createElement('li');
-  galleryItem.classList.add('gallery-item');
-
-  galleryItem.innerHTML = `
-    <a class="gallery-link" href="${image.original}">
-      <img class="gallery-image" src="${image.preview}" data-source="${image.original}" alt="${image.description}" />
+  const htmlMarkUp = images.map(({ preview, original, description }) => 
+    `<li class="gallery-item">
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+        width="360"
+        height="200"
+      />
     </a>
-  `;
-
-  galleryContainer.appendChild(galleryItem);
-});    
-galleryContainer.addEventListener('click', event => {
-    event.preventDefault();
+  </li>`
+  ).join('');
   
-    const image = event.target;
+  gallery.insertAdjacentHTML("afterbegin", htmlMarkUp);
   
-    if (image.nodeName === 'IMG') {
-      console.log(image.dataset.source);
-    }
-  });
-  galleryContainer.addEventListener('click', event => {
-    event.preventDefault();
+  gallery.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    const clickedImage = ev.target.closest('.gallery-image');
+    const largeImageUrl = clickedImage.dataset.source;
+    console.log(largeImageUrl);
+    const instance = basicLightbox.create(`
+       <div class="modal"><img src="${largeImageUrl}" alt="Large image" width="1112" height="640"></div>
   
-    const image = event.target;
+    `);
   
-    if (image.nodeName === 'IMG') {
-      const largeImageURL = image.dataset.source;
-  
-      const instance = basicLightbox.create(`
-        <img src="${largeImageURL}" alt="${image.alt}">
-      `);
-  
-      instance.show();
-    }
+  instance.show();
   });
